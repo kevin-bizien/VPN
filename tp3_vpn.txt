@@ -1,0 +1,176 @@
+RÉSEAUX D'OPÉRATEURS - TP3 - 11/04/18
+________________________________________________
+http://www.frameip.com/mpls-cisco/#43-8211-routeurs-cisco-virtuels-vrf
+https://www.cisco.com/c/en/us/support/docs/multiprotocol-label-switching-mpls/multiprotocol-label-switching-over-atm-mpls-over-atm/10468-mpls-bgp-rip.html
+Fin cours VPN-BGP-MPLS
+
+-> OSPF (IGP) sur Provider
+-> 1 VPN avec 3 CE (VPN_X) et hub  avec IGP qu'on veut ou route statique
+ + 1 VPN avec 2 CE (VPN_Y) et mesh avec IGP
+
+0. OSPF sur P + PE
+1. VRF (4.3) sur PE
+2. MP-BGP (4.4) : config VRF sur PE (import/export) -> mesh/hub
+				  config MP-BGP PE
+3. RIP : échange CE avec PE (4.5)
+
+
+-----------------
+PROVIDER (P + PE)
+-----------------
+
+** MPLS (sauf loopback) **
+int range GE1-3/0
+ mpls ip
+!
+
+** OSPF (PE1) **
+router ospf 1
+ log-adjacency-changes
+ network 10.0.0.128 0.0.0.0 area 0
+ network 10.0.0.12 0.0.0.3 area 0
+ network 10.0.0.8 0.0.0.3 area 0
+ network 10.0.0.20 0.0.0.3 area 0
+!
+
+
+------
+PE VRF
+------
+
+** VRF **
+int x (vers CE)
+ ip vrf forwarding VPN_X
+!
+
+int y (vers CE)
+ ip vrf forwarding VPN_Y
+!
+
+** Hub-spoke (VPN_X) **
+PE1 (stub) -------- PE2 (hub)
+PE3 (stub) --------/
+PE4 (stub) --------/
+
+*stub*
+ip vrf VPN_X
+ rd 500:1
+ route-target export 500:2
+ route-target import 500:1
+!
+
+*hub PE2*
+ip vrf VPN_X
+ rd 500:1
+ route-target export 500:1
+ route-target import 500:2
+!
+
+** Mesh (VPN_Y) **
+ip vrf VPN_Y
+ rd 500:3
+ route-target export 500:3
+ route-target import 500:3
+!
+
+** Vérif **
+#sh ip route vrf VPN_X
+#sh ip route vrf VPN_Y
+#sh ip vrf
+
+
+---------
+PE MP-BGP
+---------
+
+** PE1 **
+router bgp 1
+ no synchronization
+ neighbor 10.0.0.131 remote-as 1
+ neighbor 10.0.0.131 update-source Loopback0
+ neighbor 10.0.0.132 remote-as 1
+ neighbor 10.0.0.132 update-source Loopback0
+ neighbor 10.0.0.133 remote-as 1
+ neighbor 10.0.0.133 update-source Loopback0
+ no auto-summary
+ !
+ address-family vpnv4
+ neighbor 10.0.0.131 activate
+ neighbor 10.0.0.131 send-community extended
+ neighbor 10.0.0.132 activate
+ neighbor 10.0.0.132 send-community extended
+ neighbor 10.0.0.133 activate
+ neighbor 10.0.0.133 send-community extended
+ no auto-summary
+ exit-address-family
+!
+
+** Vérif **
+#sh ip bgp vpnv4 all
+
+
+-------
+CE eBGP
+-------
+
+** PE1 **
+router bgp 1
+!
+ [...]
+ address-family ipv4 vrf VPN_X
+ redistribute rip
+ no auto-summary
+ no synchronization
+ exit-address-family
+ [...]
+! 
+router rip
+ version 2
+ !
+ address-family ipv4 vrf VPN_X
+ version 2
+ redistribute bgp 1 metric 1
+ network 10.0.0.48
+ no auto-summary
+ exit-address-family
+ !
+ address-family ipv4 vrf VPN_Y
+ version 2
+ redistribute bgp 1 metric 1
+ network 10.0.0.0
+ no auto-summary
+ exit-address-family
+!
+
+** CE4VPNX **
+router rip
+ version 2
+ network 10.0.0.48
+ no auto-summary
+!
+
+** CE4VPNY **
+router rip
+ version 2
+ network 10.0.0.0
+ no auto-summary
+!
+
+** Vérif **
+*CE*
+#traceroute 10.0.0.42
+
+*PE*
+#sh ip route vrf VPN_Y
+#traceroute vrf VPN_X 10.0.0.42
+
+
+----------
+QUESTION 3
+----------
+Désactiver VPN_Y puis réactiver
+
+*PE1+3*
+#int x
+no ip vrf forwarding VPN_Y
+ip vrf forwarding VPN_Y

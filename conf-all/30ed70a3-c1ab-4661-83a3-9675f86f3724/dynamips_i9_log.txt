@@ -1,0 +1,45 @@
+Apr 14 10:42:13.132 HYPERVISOR: Release 0.2.17-amd64/Darwin (tag 2017072410)
+Apr 14 10:42:13.132 HYPERVISOR: Started on IP = 127.0.0.1, TCP port = 50021.
+Apr 14 10:42:13.139 HYPERVISOR: exec_cmd: hypervisor version 
+Apr 14 10:42:13.140 HYPERVISOR: exec_cmd: hypervisor working_dir /Users/Renan/GNS3/projects/tp3_vpn/project-files/dynamips 
+Apr 14 10:42:13.140 GENERAL: working_dir=/Users/Renan/GNS3/projects/tp3_vpn/project-files/dynamips
+Apr 14 10:42:13.140 HYPERVISOR: exec_cmd: hypervisor working_dir /Users/Renan/GNS3/projects/tp3_vpn/project-files/dynamips/a879f03d-8a23-463d-89c4-1f6700fbefb1 
+Apr 14 10:42:13.141 GENERAL: working_dir=/Users/Renan/GNS3/projects/tp3_vpn/project-files/dynamips/a879f03d-8a23-463d-89c4-1f6700fbefb1
+Apr 14 10:42:13.141 HYPERVISOR: exec_cmd: vm create CE2VPNX 10 c7200 
+Apr 14 10:42:13.141 VM: VM CE2VPNX created.
+Apr 14 10:42:13.142 HYPERVISOR: exec_cmd: vm set_con_tcp_port CE2VPNX 5009 
+Apr 14 10:42:13.142 HYPERVISOR: exec_cmd: c7200 get_mac_addr CE2VPNX 
+Apr 14 10:42:13.142 HYPERVISOR: exec_cmd: vm get_status CE2VPNX 
+Apr 14 10:42:13.142 HYPERVISOR: exec_cmd: vm slot_add_binding CE2VPNX 0 0 C7200-IO-FE 
+Apr 14 10:42:13.143 HYPERVISOR: exec_cmd: vm set_disk0 CE2VPNX 0 
+Apr 14 10:42:13.144 HYPERVISOR: exec_cmd: vm get_status CE2VPNX 
+Apr 14 10:42:13.144 HYPERVISOR: exec_cmd: vm set_idle_pc CE2VPNX 0x6072ccf4 
+Apr 14 10:42:13.145 HYPERVISOR: exec_cmd: vm set_ios CE2VPNX /Users/Renan/GNS3/images/IOS/C7200-AD.BIN 
+Apr 14 10:42:13.145 HYPERVISOR: exec_cmd: c7200 set_mac_addr CE2VPNX ca0a.3408.0000 
+Apr 14 10:42:13.146 HYPERVISOR: exec_cmd: vm set_nvram CE2VPNX 512 
+Apr 14 10:42:13.146 HYPERVISOR: exec_cmd: vm set_ram CE2VPNX 512 
+Apr 14 10:42:13.147 HYPERVISOR: exec_cmd: vm get_status CE2VPNX 
+Apr 14 10:42:13.147 HYPERVISOR: exec_cmd: vm slot_add_binding CE2VPNX 1 0 PA-GE 
+Apr 14 10:42:14.284 HYPERVISOR: exec_cmd: nio create_udp udp-ac0b0e7a-5d5f-430b-a12d-f0d8c18f9944 10022 127.0.0.1 10023 
+Apr 14 10:42:14.321 HYPERVISOR: exec_cmd: vm slot_add_nio_binding CE2VPNX 1 0 udp-ac0b0e7a-5d5f-430b-a12d-f0d8c18f9944 
+Apr 14 10:42:14.322 HYPERVISOR: exec_cmd: vm get_status CE2VPNX 
+Apr 14 10:42:32.855 HYPERVISOR: exec_cmd: vm set_ghost_status CE2VPNX 2 
+Apr 14 10:42:32.857 HYPERVISOR: exec_cmd: vm set_ghost_file CE2VPNX /Users/Renan/GNS3/projects/tp3_vpn/project-files/dynamips/C7200-AD.BIN-512.ghost 
+Apr 14 10:42:32.858 HYPERVISOR: exec_cmd: vm get_status CE2VPNX 
+Apr 14 10:42:32.863 HYPERVISOR: exec_cmd: vm set_config CE2VPNX configs/i10_startup-config.cfg 
+Apr 14 10:42:32.864 HYPERVISOR: exec_cmd: vm start CE2VPNX 
+Apr 14 10:43:03.118 HYPERVISOR: exec_cmd: vm extract_config CE2VPNX 
+Apr 14 10:43:33.120 HYPERVISOR: exec_cmd: vm extract_config CE2VPNX 
+Apr 14 10:52:22.858 HYPERVISOR: exec_cmd: vm get_status CE2VPNX 
+Apr 14 10:52:22.859 HYPERVISOR: exec_cmd: vm stop CE2VPNX 
+Apr 14 10:52:22.958 VM: VM CE2VPNX shutdown.
+Apr 14 10:52:22.958 HYPERVISOR: exec_cmd: vm extract_config CE2VPNX 
+Apr 14 10:52:25.777 HYPERVISOR: exec_cmd: vm get_status CE2VPNX 
+Apr 14 10:52:25.778 HYPERVISOR: exec_cmd: vm extract_config CE2VPNX 
+Apr 14 10:52:26.103 HYPERVISOR: exec_cmd: vm get_status CE2VPNX 
+Apr 14 10:52:26.104 HYPERVISOR: exec_cmd: vm extract_config CE2VPNX 
+Apr 14 10:52:26.107 HYPERVISOR: exec_cmd: vm delete CE2VPNX 
+Apr 14 10:52:26.107 VM: VM CE2VPNX destroyed.
+Apr 14 10:52:26.109 HYPERVISOR: exec_cmd: hypervisor stop 
+Apr 14 10:52:26.446 HYPERVISOR: Stopped.
+Apr 14 10:52:26.446 GENERAL: reset done.
